@@ -7,10 +7,13 @@ on:
 
 env:
   PREVIOUS_COMMIT: ${{ steps.previous_commit.outputs.hash }}
+  
 jobs:
   Rollback:
     runs-on: ubuntu-latest
+  
     steps:
+    - uses: actions/checkout@v2
     - name: Get previous commit hash
       id: previous_commit
       run: echo "::set-output name=hash::$(git rev-parse HEAD^)"
