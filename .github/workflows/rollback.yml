@@ -1,0 +1,70 @@
+name: Track Rollback
+
+on: 
+  push:
+    branches:
+      - main
+
+env:
+  PREVIOUS_COMMIT: ${{ steps.previous_commit.outputs.hash }}
+
+steps:
+  - name: Get previous commit hash
+    id: previous_commit
+    run: echo "::set-output name=hash::$(git rev-parse HEAD^)"
+
+  - name: Compare commit hashes
+    run: |
+      if [ "$PREVIOUS_COMMIT" != "$GITHUB_SHA" ]; then
+        echo "Rollback detected! Previous commit: $PREVIOUS_COMMIT"
+      else
+        echo "No rollback detected."
+      fi
+This workflow listens for pushes to the main branch and runs when a push event occurs. It first captures the hash of the previous commit, and then compares it with the hash of the current commit. If they are different, it means that a rollback has occurred. You can customize this workflow to take specific actions based on the rollback status, such as sending a notification or updating a status in another system.
+
+
+
+
+Simon St-Onge
+github action send notification to slack channel abut rollback detected
+
+You can use the Slack API to send notifications to a Slack channel about rollbacks detected by GitHub Actions. Here's a modified version of the workflow from the previous answer that sends a Slack notification:
+
+bash
+Copy code
+name: Track Rollback and Send Slack Notification
+
+on: 
+  push:
+    branches:
+      - main
+
+env:
+  PREVIOUS_COMMIT: ${{ steps.previous_commit.outputs.hash }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+steps:
+  - name: Get previous commit hash
+    id: previous_commit
+    run: echo "::set-output name=hash::$(git rev-parse HEAD^)"
+
+  - name: Compare commit hashes
+    run: |
+      if [ "$PREVIOUS_COMMIT" != "$GITHUB_SHA" ]; then
+        echo "Rollback detected! Previous commit: $PREVIOUS_COMMIT"
+        status="Rollback detected!"
+      else
+        echo "No rollback detected."
+        status="No rollback detected."
+      fi
+
+  - name: Send Slack Notification
+    if: env.status == "Rollback detected!"
+    uses: rtCamp/action-slack@v2
+    env:
+      SLACK_MESSAGE: "${{ env.status }} Previous commit: ${{ env.PREVIOUS_COMMIT }}"
+    with:
+      args: --webhook "${{ env.SLACK_WEBHOOK_URL }}" --message "${{ env.SLACK_MESSAGE }}"
+
+
+Regenerate response
