@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-
-env:
-  PREVIOUS_COMMIT: ${{ steps.previous_commit.outputs.hash }}
   
 jobs:
   Rollback:
