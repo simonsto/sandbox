@@ -1,0 +1,43 @@
+name: Track Rollback and Send Slack Notification
+
+on: 
+  push:
+    branches:
+      - main
+
+#env:
+#  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+jobs:
+  track_rollback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get previous commit hash
+        run: echo "$(git rev-parse HEAD)"
+        id: previous_commit
+        shell: bash
+        continue-on-error: true
+        env:
+          PREVIOUS_COMMIT: ${{ steps.previous_commit.outputs.stdout }}
+
+      - name: Compare commit hashes
+        run: |
+          if [ "${{ env.PREVIOUS_COMMIT }}" != "$GITHUB_SHA" ]; then
+            echo "Rollback detected! Previous commit: ${{ env.PREVIOUS_COMMIT }}"
+            status="Rollback detected!"
+          else
+            echo "No rollback detected."
+            status="No rollback detected."
+          fi
+
+ #     - name: Send Slack Notification
+ #       if: env.status == "Rollback detected!"
+ #       uses: rtCamp/action-slack@v2
+ #       env:
+ #         SLACK_MESSAGE: "${{ env.status }} Previous commit: ${{ env.PREVIOUS_COMMIT }}"
+ #       with:
+ #         args: --webhook "${{ env.SLACK_WEBHOOK_URL }}" --message "${{ env.SLACK_MESSAGE }}"
