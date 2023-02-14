@@ -29,11 +29,11 @@ jobs:
         cat ahead_commits.txt
    #   if: steps.git-log.outputs.ahead == ''
 
-    - name: Notify via Slack
-      uses: rtCamp/action-slack-notify@v2.1
-      if: steps.git-log.outputs.ahead != ''
-      with:
-        status: ${{ job.status }}
-        text: "Commits ahead of master branch: \n```\n$(cat ahead_commits.txt)\n```"
-        channel_id: ${{ secrets.SLACK_CHANNEL }}
-        slack_bot_token: ${{ secrets.SLACK_BOT_TOKEN }}
+  #  - name: Notify via Slack
+  #    uses: rtCamp/action-slack-notify@v2.1
+  #    if: steps.git-log.outputs.ahead != ''
+  #    with:
+  #      status: ${{ job.status }}
+  #      text: "Commits ahead of master branch: \n```\n$(cat ahead_commits.txt)\n```"
+  #      channel_id: ${{ secrets.SLACK_CHANNEL }}
+  #      slack_bot_token: ${{ secrets.SLACK_BOT_TOKEN }}
