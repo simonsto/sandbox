@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout branch
       uses: actions/checkout@v2
+      with:
+       fetch-depth: 5
 
     - name: Fetch latest changes
       run: git fetch
