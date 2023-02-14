@@ -22,7 +22,7 @@ jobs:
       id: git-log
       run: |
         git log --pretty=oneline origin/main..HEAD &> result.txt
-        cat result.txt |wc | awk '{print ${{ github.event.repository.name }} "commits ahead of master: " $1}'
+        cat result.txt |wc | awk '{print ${{ github.repository }} "commits ahead of master: " $1}'
    
         
 
