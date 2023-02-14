@@ -27,7 +27,7 @@ jobs:
       run: |
         echo "Commits ahead of master branch:"
         cat ahead_commits.txt
-      if: steps.git-log.outputs.ahead == ''
+   #   if: steps.git-log.outputs.ahead == ''
 
     - name: Notify via Slack
       uses: rtCamp/action-slack-notify@v2.1
