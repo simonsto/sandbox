@@ -19,7 +19,7 @@ jobs:
     - name: Check for commits ahead of master
       id: git-log
       run: |
-        git log --pretty=oneline origin/main..HEAD |wc | awk '{print "commits ahead of master: " $1}'
+        git log --pretty=oneline origin/main..HEAD |wc | awk '{print "commits ahead of master: " $1 $2 $3}'
         
 
   
