@@ -15,11 +15,14 @@ jobs:
 
     - name: Fetch latest changes
       run: git fetch
+      
+    - name: get epository name
+      run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
 
     - name: Check for commits ahead of master
       id: git-log
       run: |
-        git log --pretty=oneline origin/main..HEAD |wc | awk '{print "commits ahead of master: " $1}'
+        git log --pretty=oneline origin/main..HEAD |wc | awk '{print $GITHUB_ENV "commits ahead of master: " $1}'
         
 
   
