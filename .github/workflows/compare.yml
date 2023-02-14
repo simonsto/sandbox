@@ -3,7 +3,8 @@ name: Check Commits Ahead of Master
 on:
   push:
     branches:
-      - staging
+       staging
+
 
 jobs:
   check-commits-ahead:
@@ -16,16 +17,18 @@ jobs:
        fetch-depth: 100
 
     - name: Fetch latest changes
-      run: git fetch
-
+      run: git fetch      
+ 
     - name: Check for commits ahead of master
       id: git-log
       run: |
+
         git log --pretty=oneline origin/main..HEAD &> result.txt
         echo ${{ github.repository }} 
         cat result.txt |wc | awk '{print "commits ahead of master: " $1}'
        
    
+
         
 
   
