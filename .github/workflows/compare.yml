@@ -19,14 +19,10 @@ jobs:
     - name: Check for commits ahead of master
       id: git-log
       run: |
-        git log --pretty=oneline origin/main..HEAD > ahead_commits.txt
-        echo "::set-output name=ahead::$(cat ahead_commits.txt)"
+        git log --pretty=oneline origin/main..HEAD 
+        
 
-    - name: Display results
-      if: steps.git-log.outputs.ahead != ''
-      run: |
-        echo "Commits ahead of master branch:"
-        cat ahead_commits.txt
+  
    #   if: steps.git-log.outputs.ahead == ''
 
   #  - name: Notify via Slack
